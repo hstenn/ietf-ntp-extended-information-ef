@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC0958 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.0958.xml">
+<!ENTITY RFC5905 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5905.xml">
+<!ENTITY RFC2827 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2827.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2434 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2434.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="std" docName="draft-stenn-ntp-extended-information-01" ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters -->
+
+    <title abbrev="Network Time Protocol Extended Information">Network Time
+    Protocol Extended Information Extension Field</title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+    <!-- Another author who claims to be an editor -->
+
+    <author fullname="Harlan Stenn" initials="H." surname="Stenn">
+      <organization>Network Time Foundation</organization>
+
+      <address>
+        <postal>
+          <street>P.O. Box 918</street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Talent, OR</city>
+
+          <region/>
+
+          <code>97540</code>
+
+          <country>US</country>
+        </postal>
+
+        <phone/>
+
+        <email>stenn@nwtime.org</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+<!-- other authors -->
+
+    <date year="2017"/>
+
+    <!-- If the month and year are both specified and are the current ones,
+         xml2rfc will fill in the current day for you. If only the current
+         year is specified, xml2rfc will fill in the current day and month
+         for you. If the year is not the current one, it is necessary to
+         specify at least a month (xml2rfc assumes day="1" if not specified
+         for the purpose of calculating the expiry date).  With drafts it is
+         normally sufficient to specify just the year. -->
+
+    <!-- Meta-data Declarations -->
+
+    <area>General</area>
+
+    <workgroup>Internet Engineering Task Force</workgroup>
+
+    <!-- WG name at the upperleft corner of the doc,
+         IETF is fine for individual submissions.  
+	 If this element is not present, the default is "Network Working
+         Group", which is used by the RFC Editor as a nod to the history of
+         the IETF. -->
+
+    <keyword>NTP</keyword>
+
+    <!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. -->
+
+    <abstract>
+      <t>The network packet format used by NTP has changed very little
+	between NTPv1, defined by <xref target="RFC0958">RFC 958</xref> in
+	1985, and NTPv4, defined by <xref target="RFC5905">RFC 5905</xref>.
+	The core network packet used by NTP has no spare bits available for
+	reporting additional state information and no larger data areas
+	available for larger amounts of information.  This proposal offers a
+	new extension field that would contains this additional
+	information.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>The core NTP packet format has changed little
+	since <xref target="RFC0958">RFC 958</xref> was published in 1985.
+	Since then, there has been demonstrated need to convey additional
+	information about NTP's state in an NTP packet, but no
+	backward-compatible way to usurp the few otherwise potentially
+	available bits has been found, and no larger data areas are
+	available in the core packet structure.  This proposal offers a new
+	extension field that would contain this additional information.</t>
+
+      <section title="Requirements Language">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+          NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL"
+          in this document are to be interpreted as described
+          in <xref target="RFC2119">RFC 2119</xref>.</t>
+      </section>
+    </section>
+
+    <section title="The Extended Information Extension Field">
+      <t>The Field Type of the Extended Information EF includes a version
+	specification, to make it easier to evolve this specification.</t>
+
+      <t><figure title="NTP Extension Field: Extended Information">
+          <artwork name="NTP Extension Field: Extended Information"><![CDATA[
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++---------------+---------------+-------------------------------+ 
+|          Field Type           |        Field Length           |
++-------------------------------+-------------------------------+ 
+|     Content Descriptor 1      |       Content Data 1          | 
++---------------------------------------------------------------+]]></artwork>
+        </figure></t>
+
+      <t>Field Type: TBD (Recommendation for IANA: 0x0009
+	(Extended-Information, MAC required), 0x2009 (Extended-Information,
+	MAC OPTIONAL), 0x0109 (Extended-Information Version 1, MAC
+	required), 0x2109 (Extended-Information Version 1, MAC OPTIONAL)</t>
+      <t>Field Length: as needed</t>
+      <t>Payload: For Version 1, a two octet Content Descriptor field and a
+	two octet Content Data field, as described below.</t>
+
+      <t>Version 1 Content fields.</t>
+      <t><figure title="NTP Extension Field: Extended Information Version 1
+		       Content Fields">
+          <artwork name="NTP Extension Field: Extended Information Version 1
+ Content Fields"><![CDATA[
+ Content Descriptor 1     Content Data 1
+         0x0001         TAI offset in the low-order 8 bits, 24-31
+         0x0002         Interleave Mode indicator in Bit 23
+         0xFFFD         Reserved (Zeroes)
+
+ Interleave Mode: 1 if the sender is in interleave mode, 0 otherwise]]></artwork>
+      </figure></t>
+
+      <t>Example: A system that wants to convey an offset to TAI of 36
+	seconds, and show it is in interleave mode.</t>
+	<t><figure title="NTP Extension Field: Extended Information V1, Example">
+          <artwork name="NTP Extension Field: Extended Information V1, Example"><![CDATA[
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++---------------+---------------+-------------------------------+ 
+|    Field Type (0x2109)        |   Field Length (0x0008)       |
++-------------------------------+-------------------------------+ 
+|            0x0003             |           0x0124              | 
++-------------------------------+-------------------------------+]]></artwork>
+        </figure></t>
+
+    </section>
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The author wishes to acknowledge the contributions of Martin
+      Burnicki.</t>
+    </section>
+
+    <!-- Possibly a 'Contributors' section ... -->
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This memo requests IANA to allocate NTP Extension Field Types
+	<list>
+	  <t>0x0009 (Extended-Information, MAC Required)</t>
+	  <t>0x2009 (Extended-Information, MAC OPTIONAL)</t>
+	  <t>0x0109 (Extended-Information Version 1, MAC Required)</t>
+	  <t>0x2109 (Extended-Information Version 1, MAC OPTIONAL)</t>
+	  </list>
+	for this proposal.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>Additional information TBD</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <!-- References split into informative and normative -->
+
+    <!-- There are 2 ways to insert reference entries from the citation libraries:
+     1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+     2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+        (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+     Both are cited textually in the same manner: by using xref elements.
+     If you use the PI option, xml2rfc will, by default, try to find included files in the same
+     directory as the including file. You can also define the XML_LIBRARY environment variable
+     with a value containing a set of directories to search.  These can be either in the local
+     filing system or remote ones accessed by http (http://domain/dir/... ).-->
+
+    <references title="Normative References">
+
+      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.958.xml"?-->
+
+      &RFC0958;
+
+      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+
+      &RFC2119;
+
+      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5905.xml"?-->
+
+      &RFC5905;
+
+    </references>
+
+    <!-- Here we use entities that we defined at the beginning. -->
+
+    <!-- SW: Except that we're not really using these...
+
+    <references title="Informative References">
+      &RFC3552;
+
+      &I-D.narten-iana-considerations-rfc2434bis;
+ 
+    </references> 
+     -->
+
+    <!--
+    <section anchor="app-additional" title="Additional Stuff">
+      <t>This becomes an Appendix.</t>
+    </section>
+-->
+
+    <!-- Change Log
+
+v00 2016-03-NN  HMS Initial Submission   
+                                                                                        -->
+  </back>
+</rfc>
