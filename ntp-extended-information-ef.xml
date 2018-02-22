@@ -38,7 +38,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-stenn-ntp-extended-information-01" ipr="trust200902">
+<rfc category="std" docName="draft-stenn-ntp-extended-information-02" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -85,7 +85,7 @@
 
 <!-- other authors -->
 
-    <date year="2017"/>
+    <date year="2018"/>
 
     <!-- If the month and year are both specified and are the current ones,
          xml2rfc will fill in the current day for you. If only the current
@@ -161,9 +161,7 @@
         </figure></t>
 
       <t>Field Type: TBD (Recommendation for IANA: 0x0009
-	(Extended-Information, MAC required), 0x2009 (Extended-Information,
-	MAC OPTIONAL), 0x0109 (Extended-Information Version 1, MAC
-	required), 0x2109 (Extended-Information Version 1, MAC OPTIONAL)</t>
+	(Extended-Information), 0x0109 (Extended-Information Version 1)</t>
       <t>Field Length: as needed</t>
       <t>Payload: For Version 1, a two octet Content Descriptor field and a
 	two octet Content Data field, as described below.</t>
@@ -188,7 +186,7 @@
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +---------------+---------------+-------------------------------+ 
-|    Field Type (0x2109)        |   Field Length (0x0008)       |
+|    Field Type (0x0109)        |   Field Length (0x0008)       |
 +-------------------------------+-------------------------------+ 
 |            0x0003             |           0x0124              | 
 +-------------------------------+-------------------------------+]]></artwork>
@@ -206,10 +204,8 @@
     <section anchor="IANA" title="IANA Considerations">
       <t>This memo requests IANA to allocate NTP Extension Field Types
 	<list>
-	  <t>0x0009 (Extended-Information, MAC Required)</t>
-	  <t>0x2009 (Extended-Information, MAC OPTIONAL)</t>
-	  <t>0x0109 (Extended-Information Version 1, MAC Required)</t>
-	  <t>0x2109 (Extended-Information Version 1, MAC OPTIONAL)</t>
+	  <t>0x0009 (Extended-Information)</t>
+	  <t>0x0109 (Extended-Information Version 1)</t>
 	  </list>
 	for this proposal.</t>
     </section>
