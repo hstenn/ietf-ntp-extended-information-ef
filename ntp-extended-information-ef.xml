@@ -38,7 +38,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-stenn-ntp-extended-information-02" ipr="trust200902">
+<rfc category="std" docName="draft-stenn-ntp-extended-information-03" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -131,7 +131,7 @@
       <t>The core NTP packet format has changed little
 	since <xref target="RFC0958">RFC 958</xref> was published in 1985.
 	Since then, there has been demonstrated need to convey additional
-	information about NTP's state in an NTP packet, but no
+	information about NTP's state in an NTP packet but no
 	backward-compatible way to usurp the few otherwise potentially
 	available bits has been found, and no larger data areas are
 	available in the core packet structure.  This proposal offers a new
@@ -161,15 +161,15 @@
         </figure></t>
 
       <t>Field Type: TBD (Recommendation for IANA: 0x0009
-	(Extended-Information), 0x0109 (Extended-Information Version 1)</t>
+	(Extended-Information), 0x0109 (Extended-Information, Version 1)</t>
       <t>Field Length: as needed</t>
       <t>Payload: For Version 1, a two octet Content Descriptor field and a
 	two octet Content Data field, as described below.</t>
 
       <t>Version 1 Content fields.</t>
-      <t><figure title="NTP Extension Field: Extended Information Version 1
+      <t><figure title="NTP Extension Field: Extended Information, Version 1
 		       Content Fields">
-          <artwork name="NTP Extension Field: Extended Information Version 1
+          <artwork name="NTP Extension Field: Extended Information, Version 1
  Content Fields"><![CDATA[
  Content Descriptor 1     Content Data 1
          0x0001         TAI offset in the low-order 8 bits, 24-31
@@ -205,7 +205,7 @@
       <t>This memo requests IANA to allocate NTP Extension Field Types
 	<list>
 	  <t>0x0009 (Extended-Information)</t>
-	  <t>0x0109 (Extended-Information Version 1)</t>
+	  <t>0x0109 (Extended-Information, Version 1)</t>
 	  </list>
 	for this proposal.</t>
     </section>
