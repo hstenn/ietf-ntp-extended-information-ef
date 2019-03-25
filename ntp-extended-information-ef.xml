@@ -114,6 +114,12 @@
          output. If you submit your draft to the RFC Editor, the
          keywords will be used for the search engine. -->
 
+    <t>RFC EDITOR: PLEASE REMOVE THE FOLLOWING PARAGRAPH BEFORE PUBLISHING:</t>
+    <t>
+      The source code and issues list for this draft can be found in
+      https://github.com/hstenn/ietf-ntp-extended-information-ef
+    </t>
+    
     <abstract>
       <t>
 	The core network packet used by NTP has no spare bits
