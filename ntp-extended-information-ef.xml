@@ -127,14 +127,17 @@
 
   <middle>
     <section title="Introduction">
-      <t>The core NTP packet format has changed little
-	since <xref target="RFC0958">RFC 958</xref> was published in 1985.
-	Since then, there has been demonstrated need to convey additional
+      <t>
+	The core NTP packet format has changed little since <xref
+	target="RFC0958">RFC 958</xref> was published in 1985.  Since
+	then, there has been demonstrated need to convey additional
 	information about NTP's state in an NTP packet but no
 	backward-compatible way to usurp the few otherwise potentially
 	available bits has been found, and no larger data areas are
-	available in the core packet structure.  This proposal offers a new
-	extension field that would contain this additional information.</t>
+	available in the core packet structure.  This proposal offers
+	a new extension field that would contain this additional
+	information.
+      </t>
 
       <section title="Requirements Language">
         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -145,8 +148,21 @@
     </section>
 
     <section title="The Extended Information Extension Field">
-      <t>The Field Type of the Extended Information EF includes a version
-	specification, to make it easier to evolve this specification.</t>
+      <t>
+	The Field Type of the Extended Information EF includes a
+	version number field in the low-order bits of the first octet,
+	to make it easier to evolve this specification.  The initial
+	specification for this proposal uses Version 0, which equates
+	to 0x0009 [ADJUST AS NEEDED BASED ON IANA, IF AN IANA REGISTRY
+	IS USED].  A future revision of Version 1 would equate to
+	0x0109 [IBID].
+      </t>
+
+      <t>
+	The payload for Version 0 is comprised of a two octet Content
+	Descriptor followed by a two octet Content Data field, as
+	described below.
+      </t>
 
       <t><figure title="NTP Extension Field: Extended Information">
           <artwork name="NTP Extension Field: Extended Information"><![CDATA[
@@ -160,15 +176,67 @@
         </figure></t>
 
       <t>Field Type: TBD (Recommendation for IANA: 0x0009
-	(Extended-Information), 0x0109 (Extended-Information, Version 1)</t>
+	(Extended-Information, Version 0)</t>
       <t>Field Length: as needed</t>
-      <t>Payload: For Version 1, a two octet Content Descriptor field and a
-	two octet Content Data field, as described below.</t>
 
-      <t>Version 1 Content fields.</t>
-      <t><figure title="NTP Extension Field: Extended Information, Version 1
-		       Content Fields">
-          <artwork name="NTP Extension Field: Extended Information, Version 1
+      <section title="Version 0 Content Descriptor and Content Data fields">
+	<t>
+	  There are 16 bits available for state information in the
+	  Version 0 Extended Information Content Descriptor.  These
+	  bits are allocated as follows:
+	  <list style="hanging">
+	    <t hangText="0x0001:">
+	      TAI Offset is stored in the low-order 8 bits (the second
+	      octet) of the Content Data.
+	    </t>
+	    <t hangText="0x0002:">
+	      Interleave Mode indicator in the low order bit of the
+	      first octet of the Content Data.  [NOTE: this may not be
+	      useful, and it can be removed if desired.  It can serve
+	      as a belt-and-suspenders way to identify when a packet
+	      contains interleaved timestamps.]
+	    </t>
+	    <t hangText="0xFFFD:">
+	      Reserved for future versions.  SHOULD be zeroes for
+	      Version 0, and the meaning of any nonzero values is
+	      unspecified.
+	    </t>
+	  </list>
+	</t>
+
+	<t>
+	  The Content Data field of the Version 0 Extended Information
+	  extension field is comprised of two octets, with the
+	  contents allocated as follows:
+	  <list style="hanging">
+	    <t hangText="0xXXNN:">
+	      The low-order 8 bits (NNNN) are the TAI Offset.  Any
+	      data in the high-order 8 bits (XXXX) are not part of the
+	      TAI Offset.
+	    </t>
+	    <t hangText="0xX0XX:">
+	      A value of 0 in the low-order bit of the first octet
+	      indicates that the timestamps in the base packet are not
+	      interleave-mode timestamps.
+	    </t>
+	    <t hangText="0xX1XX:">
+	      A value of 1 in the low-order bit of the first octet
+	      indicates that the timestamps in the base packet are
+	      interleave-mode timestamps.
+	    </t>
+	    <t hangText="0xN2XX:">thru</t>
+	    <t hangText="0xNDXX:">
+	      Any of the seven high-order bits in the first octet are
+	      reserved for future versions and SHOULD be zero for
+	      Version 0.  The meaning of any nonzero values is
+	      unspecified.
+	    </t>
+	  </list>
+	</t>
+      
+	<t><figure title="NTP Extension Field: Extended Information, Version 0
+			  Content Fields">
+          <artwork name="NTP Extension Field: Extended Information, Version 0
  Content Fields"><![CDATA[
  Content Descriptor 1     Content Data 1
          0x0001         TAI offset in the low-order 8 bits, 24-31
@@ -180,12 +248,12 @@
 
       <t>Example: A system that wants to convey an offset to TAI of 36
 	seconds, and show it is in interleave mode.</t>
-	<t><figure title="NTP Extension Field: Extended Information V1, Example">
-          <artwork name="NTP Extension Field: Extended Information V1, Example"><![CDATA[
+	<t><figure title="NTP Extension Field: Extended Information V0, Example">
+          <artwork name="NTP Extension Field: Extended Information V0, Example"><![CDATA[
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +---------------+---------------+-------------------------------+ 
-|    Field Type (0x0109)        |   Field Length (0x0008)       |
+|    Field Type (0x0009)        |   Field Length (0x0008)       |
 +-------------------------------+-------------------------------+ 
 |            0x0003             |           0x0124              | 
 +-------------------------------+-------------------------------+]]></artwork>
@@ -201,16 +269,18 @@
     <!-- Possibly a 'Contributors' section ... -->
 
     <section anchor="IANA" title="IANA Considerations">
-      <t>This memo requests IANA to allocate NTP Extension Field Types
+      <t>This memo requests IANA to allocate NTP Extension Field Type
 	<list>
-	  <t>0x0009 (Extended-Information)</t>
-	  <t>0x0109 (Extended-Information, Version 1)</t>
+	  <t>0x0009 (Extended-Information, Version 0)</t>
 	  </list>
 	for this proposal.</t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>Additional information TBD</t>
+      <t>
+	No unusual or special security considerations are known to be
+	associated with this proposal.
+      </t>
     </section>
   </middle>
 
