@@ -176,7 +176,7 @@
         </figure></t>
 
       <t>Field Type: TBD (Recommendation for IANA: 0x0009
-	(Extended-Information, Version 0)</t>
+	(Extended-Information, Version 0))</t>
       <t>Field Length: as needed</t>
 
       <section title="Version 0 Content Descriptor and Content Data fields">
