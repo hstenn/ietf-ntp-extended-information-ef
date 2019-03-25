@@ -85,7 +85,7 @@
 
 <!-- other authors -->
 
-    <date year="2018"/>
+    <date year="2019"/>
 
     <!-- If the month and year are both specified and are the current ones,
          xml2rfc will fill in the current day for you. If only the current
@@ -115,14 +115,13 @@
          keywords will be used for the search engine. -->
 
     <abstract>
-      <t>The network packet format used by NTP has changed very little
-	between NTPv1, defined by <xref target="RFC0958">RFC 958</xref> in
-	1985, and NTPv4, defined by <xref target="RFC5905">RFC 5905</xref>.
-	The core network packet used by NTP has no spare bits available for
-	reporting additional state information and no larger data areas
-	available for larger amounts of information.  This proposal offers a
-	new extension field that would contains this additional
-	information.</t>
+      <t>
+	The core network packet used by NTP has no spare bits
+	available for reporting additional state information and no
+	larger data areas available for larger amounts of information.
+	This proposal offers a new extension field that would contain
+	this additional information.
+      </t>
     </abstract>
   </front>
 
@@ -196,7 +195,7 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The author wishes to acknowledge the contributions of Martin
-      Burnicki.</t>
+      Burnicki and Sam Weiler.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
