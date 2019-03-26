@@ -38,7 +38,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-stenn-ntp-extended-information-03" ipr="trust200902">
+<rfc category="std" docName="draft-stenn-ntp-extended-information-04" ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
      you can add the attributes updates="NNNN" and obsoletes="NNNN" 
@@ -160,8 +160,8 @@
 	to make it easier to evolve this specification.  The initial
 	specification for this proposal uses Version 0, which equates
 	to 0x0009 [ADJUST AS NEEDED BASED ON IANA, IF AN IANA REGISTRY
-	IS USED].  A future revision of Version 1 would equate to
-	0x0109 [IBID].
+	IS USED].  A future revision for Version 1 would use 0x0109
+	[IBID].
       </t>
 
       <t>
